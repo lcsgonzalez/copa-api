@@ -21,4 +21,5 @@ public class Usuario {
     @OneToOne
     @JoinColumn(name="id_aluno", referencedColumnName="id")
     private Aluno aluno;
+    private boolean ativo;
 }

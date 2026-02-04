@@ -1,0 +1,1 @@
+alter table alunos add column nome varchar(255) not null;

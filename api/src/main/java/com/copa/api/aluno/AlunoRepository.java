@@ -1,9 +1,9 @@
-package com.copa.api.casa;
+package com.copa.api.aluno;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CasaRepository extends JpaRepository<Casa, Long> {
-    Page<Casa> findAllByAtivoTrue(Pageable paginacao);
+public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+    Page<Aluno> findAllByAtivoTrue(Pageable paginacao);
 }

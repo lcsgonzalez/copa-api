@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 @Table(name="presencas")
 @Entity(name="Presencas")
-@IdClass(IdAlunoData.class)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

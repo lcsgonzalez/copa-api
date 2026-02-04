@@ -1,7 +1,6 @@
 package com.copa.api.pontuacao;
 
 import com.copa.api.casa.Casa;
-import com.copa.api.presenca.IdAlunoData;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +10,6 @@ import java.time.LocalDate;
 
 @Table(name="pontuacoes")
 @Entity(name="pontuacoes")
-@IdClass(IdAlunoData.class)
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor

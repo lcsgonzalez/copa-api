@@ -19,8 +19,20 @@ public class Casa {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    private boolean ativo;
 
     public Casa(@Valid DadosCadastroCasa dados) {
         this.nome = dados.nome();
+        this.ativo = true;
+    }
+
+    public void atualizarInformacoes(@Valid Casa casaAtualizar) {
+        if(casaAtualizar.getNome()!=null){
+            this.nome = casaAtualizar.getNome();
+        }
+    }
+
+    public void excluir(){
+        this.ativo = false;
     }
 }

@@ -26,18 +26,20 @@ public class CasaController {
 
     @GetMapping
     public Page<Casa> listar(@PageableDefault(size=4, sort={"nome"}) Pageable paginacao){
-        return repository.findAll(paginacao);
+        return repository.findAllByAtivoTrue(paginacao);
     }
 
     @PutMapping
     @Transactional
-    public void atualizarCasa(@RequestBody @Valid Casa casa){
-        repository.save(casa);
+    public void atualizarCasa(@RequestBody @Valid Casa casaAtualizar){
+        var casa = repository.getReferenceById(casaAtualizar.getId());
+        casa.atualizarInformacoes(casaAtualizar);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @Transactional
-    public void excluirCasa(@RequestParam Long idCasa){
-        repository.deleteById(idCasa);
+    public void excluirCasa(@PathVariable Long id){
+        var casa = repository.getReferenceById(id);
+        casa.excluir();
     }
 }
