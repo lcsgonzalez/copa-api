@@ -1,0 +1,1 @@
+alter table presencas add column presente tinyint not null;

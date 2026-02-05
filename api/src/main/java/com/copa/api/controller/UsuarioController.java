@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -22,13 +23,17 @@ public class UsuarioController {
     @Autowired
     private AlunoRepository alunoRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @PostMapping
     @Transactional
     public ResponseEntity<DadosListagemUsuario> cadastrarUsuario(
             @RequestBody @Valid DadosCadastroUsuario dados,
             UriComponentsBuilder uriBuilder) {
         var aluno = alunoRepository.getReferenceById(dados.idAluno());
-        var usuario = new Usuario(dados, aluno);
+        var senhaCriptografada = passwordEncoder.encode(dados.senha());
+        var usuario = new Usuario(dados, aluno, senhaCriptografada);
         repository.save(usuario);
 
         var uri = uriBuilder.path("/usuarios/{id}").buildAndExpand(usuario.getId()).toUri();
@@ -55,12 +60,13 @@ public class UsuarioController {
             @RequestBody @Valid DadosAtualizarUsuario dados) {
         var usuario = repository.getReferenceById(id);
 
-        if(dados.idAluno() != null) {
-            var aluno = alunoRepository.getReferenceById(dados.idAluno());
-            usuario.atualizarInformacoes(dados, aluno);
-        } else {
-            usuario.atualizarInformacoes(dados, null);
-        }
+        var aluno = dados.idAluno() != null ?
+                alunoRepository.getReferenceById(dados.idAluno()) : null;
+
+        var senhaCriptografada = dados.senha() != null ?
+                passwordEncoder.encode(dados.senha()) : null;
+
+        usuario.atualizarInformacoes(dados, aluno, senhaCriptografada);
 
         return ResponseEntity.ok(new DadosListagemUsuario(usuario));
     }

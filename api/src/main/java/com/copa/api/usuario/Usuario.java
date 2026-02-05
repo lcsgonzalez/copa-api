@@ -24,19 +24,19 @@ public class Usuario {
     private Aluno aluno;
     private boolean ativo;
 
-    public Usuario(@Valid DadosCadastroUsuario dados, Aluno aluno) {
+    public Usuario(@Valid DadosCadastroUsuario dados, Aluno aluno, String senhaCriptografada) {
         this.email = dados.email();
-        this.senha = dados.senha();
+        this.senha = senhaCriptografada;
         this.aluno = aluno;
         this.ativo = true;
     }
 
-    public void atualizarInformacoes(@Valid DadosAtualizarUsuario dados, Aluno aluno) {
+    public void atualizarInformacoes(@Valid DadosAtualizarUsuario dados, Aluno aluno, String senhaCriptografada) {
         if(dados.email() != null){
             this.email = dados.email();
         }
         if(dados.senha() != null){
-            this.senha = dados.senha();
+            this.senha = senhaCriptografada;
         }
         if(aluno != null){
             this.aluno = aluno;
