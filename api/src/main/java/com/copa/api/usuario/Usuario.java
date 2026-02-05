@@ -2,6 +2,7 @@ package com.copa.api.usuario;
 
 import com.copa.api.aluno.Aluno;
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
 import lombok.*;
 
 @Table(name="usuarios")
@@ -22,4 +23,27 @@ public class Usuario {
     @JoinColumn(name="id_aluno", referencedColumnName="id")
     private Aluno aluno;
     private boolean ativo;
+
+    public Usuario(@Valid DadosCadastroUsuario dados, Aluno aluno) {
+        this.email = dados.email();
+        this.senha = dados.senha();
+        this.aluno = aluno;
+        this.ativo = true;
+    }
+
+    public void atualizarInformacoes(@Valid DadosAtualizarUsuario dados, Aluno aluno) {
+        if(dados.email() != null){
+            this.email = dados.email();
+        }
+        if(dados.senha() != null){
+            this.senha = dados.senha();
+        }
+        if(aluno != null){
+            this.aluno = aluno;
+        }
+    }
+
+    public void excluir() {
+        this.ativo = false;
+    }
 }

@@ -3,12 +3,12 @@ package com.copa.api.controller;
 import com.copa.api.aluno.*;
 import com.copa.api.casa.Casa;
 import com.copa.api.casa.CasaRepository;
-import com.copa.api.casa.DadosCadastroCasa;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +32,12 @@ public class AlunoController {
     @GetMapping
     public Page<DadosListagemAluno> listar(@PageableDefault(size=35, sort={"nome"}) Pageable paginacao){
         return repository.findAllByAtivoTrue(paginacao).map(DadosListagemAluno::new);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DadosListagemAluno> detalhar(@PathVariable Long id) {
+        var aluno = repository.getReferenceById(id);
+        return ResponseEntity.ok(new DadosListagemAluno(aluno));
     }
 
     @PutMapping("/{id}")
